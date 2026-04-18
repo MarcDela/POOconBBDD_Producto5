@@ -1,8 +1,10 @@
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
+
+import main.java.InnerJoinConElCafe.modelo.*;
+
 import org.junit.jupiter.api.BeforeEach;
 import java.time.LocalDateTime;
-import InnerJoinConElCafe.modelo.*;
 
 public class PruebaTest {
 
