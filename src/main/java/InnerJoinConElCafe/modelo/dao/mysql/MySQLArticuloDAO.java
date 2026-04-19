@@ -1,80 +1,78 @@
 package InnerJoinConElCafe.modelo.dao.mysql;
 
-import java.sql.*;
-import java.util.ArrayList;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import InnerJoinConElCafe.modelo.HibernateUtil;
 import java.util.List;
-
 import InnerJoinConElCafe.modelo.Articulo;
 import InnerJoinConElCafe.modelo.dao.ArticuloDAO;
-import InnerJoinConElCafe.modelo.dao.ConexionBD;
+
 
 public class MySQLArticuloDAO implements ArticuloDAO {
 
-    private final String GET_ALL = "SELECT * FROM articulos";
-    private final String DELETE = "DELETE FROM articulos WHERE codigo = ?";
 
     @Override
     public void insertar(Articulo a) throws Exception {
-        Connection conn = null;
-        try {
-            conn = ConexionBD.conectar();
-            // 1. Desactivamos el autoCommit
-            conn.setAutoCommit(false); 
+        Transaction transaction = null;
+
+        // Abrimos la sesión usando nuestro nuevo Util
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            
+            // Iniciamos la transacción (equivale al setAutoCommit(false))
+            transaction = session.beginTransaction();
 
             // PROCEDIMIENTO ALMACENADO
-            // 2. Llamamos al procedimiento almacenado (CallableStatement)
-            String sql = "{call insertarArticulo(?, ?, ?, ?)}";
-            try (CallableStatement cstmt = conn.prepareCall(sql)) {
-                cstmt.setString(1, a.getDescripcion());
-                cstmt.setDouble(2, a.getPrecioVenta());
-                cstmt.setDouble(3, a.getGastosEnvio());
-                cstmt.setInt(4, a.getTiempoPreparacion());
-            
-                cstmt.executeUpdate();
-            }
+            // .createNativeQuery es para usar SQL "puro" o procedimientos almacenados
+            session.createNativeQuery("CALL insertarArticulo(:desc, :precio, :gastos, :tiempo)", Articulo.class)
+               .setParameter("desc", a.getDescripcion())
+               .setParameter("precio", a.getPrecioVenta())
+               .setParameter("gastos", a.getGastosEnvio())
+               .setParameter("tiempo", a.getTiempoPreparacion())
+               .executeUpdate();
 
-            // TRANSACCIONES
-            // 3. Si todo sale correcto, hacemos el commit 
-            conn.commit(); 
-        
+        // TRANSACCIONES
+        // Si todo sale correcto, hacemos el commit
+        transaction.commit();
+
         } catch (Exception e) {
-            // 4. Si ocurre algun tipo de error, hacemos rollback para evitar problemas
-            if (conn != null) conn.rollback();
+            // Si ocurre algun tipo de error, hacemos rollback para evitar problemas
+            if (transaction != null) {
+                transaction.rollback();
+            }
             throw e;
-        } finally {
-            if (conn != null) conn.close();
         }
     }
 
     @Override
     public List<Articulo> obtenerTodos() throws Exception {
-        List<Articulo> lista = new ArrayList<>();
-        try (Connection conn = ConexionBD.conectar();
-            PreparedStatement stat = conn.prepareStatement(GET_ALL);
-            ResultSet rs = stat.executeQuery()) {
-            
-            while (rs.next()) {
-                // Usamos el constructor sin ID
-                Articulo a = new Articulo(
-                    rs.getString("descripcion"),
-                    rs.getDouble("precioVenta"),
-                    rs.getDouble("gastosEnvio"),
-                    rs.getInt("tiempoPreparacion")
-                );
-                // Seteamos el ID manualmente tras crearlo
-                a.setCodigo(rs.getInt("codigo"));
-                lista.add(a);
-            }
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        
+            // HQL: "from Articulo" le dice a Hibernate: 
+            // "Selecciona todos los registros de la tabla asociada a la CLASE Articulo"
+            return session.createQuery("from Articulo", Articulo.class).list();
+        
+        } catch (Exception e) {
+            System.err.println("Error al obtener todos los artículos: " + e.getMessage());
+            throw e;
         }
-        return lista;
     }
 
     @Override
     public void eliminar(Articulo a) throws Exception {
-        try (Connection conn = ConexionBD.conectar();
-            PreparedStatement stat = conn.prepareStatement(DELETE)) {
-            stat.setInt(1, a.getCodigo());
-            stat.executeUpdate();
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            // Al igual que al insertar, borrar requiere una transacción
+            transaction = session.beginTransaction();
+
+            // Hibernate usa el campo marcado con @Id (codigo) para saber qué borrar
+            // .remove() es el estándar de JPA para eliminar un objeto
+            session.remove(a);
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            System.err.println("Error al eliminar el artículo: " + e.getMessage());
+            throw e;
         }
     }
 

@@ -1,13 +1,33 @@
 package InnerJoinConElCafe.modelo;
 
+import jakarta.persistence.*; // Importa todas las anotaciones necesarias
+
+@Entity
+@Table(name = "articulos") //Le indicamos a que tabla pertenece en MySQL
 public class Articulo {
 
+    @Id // Define la clave primaria
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Indica que es autoincremental
+    @Column(name = "codigo") // Nombre de la columna en la tabla
     private int codigo;
+
+    @Column(name = "descripcion")
     private String descripcion;
+
+    @Column(name = "precioVenta")
     private double precioVenta;
+
+    @Column(name = "gastosEnvio")
     private double gastosEnvio;
+
+    @Column(name = "tiempoPreparacion")
     private int tiempoPreparacion;
 
+    // --- IMPORTANTE: CONSTRUCTOR VACÍO ---
+    // Hibernate lo usa para crear el objeto antes de rellenarlo con datos de la BD
+    public Articulo() {}
+
+    // Mantenemos el constructor 
     public Articulo(String descripcion, double precioVenta, double gastosEnvio, int tiempoPreparacion) {
         this.descripcion = descripcion;
         this.precioVenta = precioVenta;
