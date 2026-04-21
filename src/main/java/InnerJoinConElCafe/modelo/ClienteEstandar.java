@@ -1,9 +1,21 @@
 package InnerJoinConElCafe.modelo;
+import jakarta.persistence.*;
 
+@Entity
+@DiscriminatorValue("Estandar")
 public class ClienteEstandar extends Cliente {
     
+    /* Constructor para Hibernate */
+    public ClienteEstandar() {
+        super();
+        this.cuotaAnual = 0.0;
+        this.descuentoEnvio = 0.0;
+    }
+
     public ClienteEstandar(String nombre, String domicilio, String nif, String email){
         super(nombre, domicilio, nif, email);
+        this.cuotaAnual = 0.0;
+        this.descuentoEnvio = 0.0;
     }
 
 

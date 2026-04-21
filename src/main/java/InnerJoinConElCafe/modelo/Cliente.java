@@ -1,11 +1,36 @@
 package InnerJoinConElCafe.modelo;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "clientes")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE) // Todo a una tabla
+@DiscriminatorColumn(name = "tipo", discriminatorType = DiscriminatorType.STRING) // La columna que diferencia
 public abstract class Cliente {
 
-    protected String nombre;
-    protected String domicilio;
-    protected String nif;
+    @Id
+    @Column(name = "email")
     protected String email;
+
+    @Column(name = "nombre")
+    protected String nombre;
+
+    @Column(name = "domicilio")
+    protected String domicilio;
+
+    @Column(name = "nif")
+    protected String nif;
+
+    // Este campo es de solo lectura para Java, Hibernate lo llena mediante el Discriminador
+    @Column(name = "tipo", insertable = false, updatable = false)
+    protected String tipo;
+
+    @Column(name = "cuotaAnual")
+    protected double cuotaAnual;
+
+    @Column(name = "descuentoEnvio")
+    protected double descuentoEnvio;
+
+    public Cliente() {}
 
     public Cliente(String nombre, String domicilio, String nif, String email) {
         this.nombre = nombre;

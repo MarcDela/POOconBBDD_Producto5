@@ -22,6 +22,9 @@
 
         <!-- MAPEADO DE LAS CLASES -->
         <mapping class="InnerJoinConElCafe.modelo.Articulo"/>
+        <mapping class="InnerJoinConElCafe.modelo.Cliente"/>
+        <mapping class="InnerJoinConElCafe.modelo.ClienteEstandar"/>
+        <mapping class="InnerJoinConElCafe.modelo.ClientePremium"/>
 
     </session-factory>
 </hibernate-configuration>
