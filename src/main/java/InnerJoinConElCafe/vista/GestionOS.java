@@ -3,7 +3,6 @@ package InnerJoinConElCafe.vista;
 import java.util.Scanner;
 
 import InnerJoinConElCafe.controlador.Controlador;
-import InnerJoinConElCafe.excepciones.DatoNoEncontradoException;
 import InnerJoinConElCafe.modelo.Articulo;
 import InnerJoinConElCafe.modelo.Cliente;
 import InnerJoinConElCafe.modelo.Lista;
@@ -207,28 +206,20 @@ public class GestionOS {
     //Pedidos
     private void añadirPedido() {
         System.out.println("--- Nuevo Pedido ---");
-        //Se genera automaticamente el numero de pedido
-        int num = controlador.generarNuevoNumeroPedido(); 
-        System.out.println("Número de pedido asignado: " + num);
     
         //2. VERIFICACION DE CLIENTE
         System.out.print("NIF del Cliente: ");
         String nif = teclado.nextLine();
 
-        try {
-            controlador.buscarCliente(nif); 
-        } catch (DatoNoEncontradoException e) {
+       // Verificación manual sin romper la sesión del futuro pedido (Modificado para Hibernate)
+        if (!controlador.existeCliente(nif)) {
             System.out.println("El cliente no existe. ¿Desea registrarlo ahora? (S/N):");
-
             if (teclado.nextLine().equalsIgnoreCase("s")) {
-                añadirCliente();
+                añadirCliente(); // Esto registrará al cliente en la BD
             } else {
-                System.out.println("Pedido cancelado: cliente no encontrado.");
+                System.out.println("Pedido cancelado.");
                 return; 
             }
-        } catch (Exception e) {
-            System.out.println("Error crítico de base de datos: " + e.getMessage());
-            return;
         }
 
         System.out.println("Código del Artículo:");
@@ -251,7 +242,7 @@ public class GestionOS {
         }
 
         // El controlador hará el trabajo sucio de buscar y unir las piezas
-        Resultado<String> res = controlador.añadirPedido(num, nif, codigo, cant);
+        Resultado<String> res = controlador.añadirPedido(nif, codigo, cant);
         System.out.println(res.getMensaje());
     }
 

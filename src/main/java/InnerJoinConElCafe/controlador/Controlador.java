@@ -114,22 +114,30 @@ public class Controlador {
         }
     }
 
-    public Resultado<String> añadirPedido(int num, String nif, int codigo, int cant) {
+    // Método para que la vista verifique si el cliente existe
+    public boolean existeCliente(String nif) {
+        try {
+            buscarCliente(nif);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public Resultado<String> añadirPedido(String nif, int codigo, int cant) {
         try {
             if (cant <= 0) throw new ValidacionDatosException("La cantidad debe ser al menos 1.");
-            
-            // Verificamos duplicados en BBDD
-            for (Pedido p : datos.getListaPedidos()) {
-                if (p.getNumeroPedido() == num) throw new PedidoException("Ya existe el pedido nº " + num);
-            }
 
             Cliente cliente = buscarCliente(nif);
             Articulo articulo = buscarArticulo(codigo);
 
-            Pedido nuevo = new Pedido(num, cant, LocalDateTime.now(), articulo, cliente);
+            // Pasamos 0 como número de pedido. 
+            // Al ser @GeneratedValue(strategy = GenerationType.IDENTITY), 
+            // Hibernate entenderá que debe ignorar ese 0 y pedirle el ID a MySQL.
+            Pedido nuevo = new Pedido(0,cant, LocalDateTime.now(), articulo, cliente);
             datos.addPedido(nuevo);
         
-            return new Resultado<>(String.valueOf(num), "Pedido creado con éxito en BBDD.");
+            return new Resultado<>(null, "Pedido creado con éxito en BBDD.");
         } catch (DatoNoEncontradoException | ValidacionDatosException | PedidoException e) {
             return new Resultado<>(e.getMessage());
         } catch (Exception e) {

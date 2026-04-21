@@ -1,16 +1,29 @@
 package InnerJoinConElCafe.modelo;
 
 import java.time.LocalDateTime;
-
 import InnerJoinConElCafe.excepciones.PedidoException;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "pedidos")
 public class Pedido {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "numeroPedido")
     private int numeroPedido;
+    @Column(name = "cantidad")
     private int cantidad;
+    @Column(name = "fechaHora")
     private LocalDateTime fechaHora;
+    @ManyToOne(fetch = FetchType.EAGER) // Muchos pedidos pueden pertenecer a UN cliente - FetchType.EAGER 
+    @JoinColumn(name = "cliente_nif", referencedColumnName = "nif") // El nombre de la FK
     private Cliente cliente;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "articulo_codigo")
     private Articulo articulo;
+
+    public Pedido() {}
 
     @Override
     public String toString() {
@@ -96,5 +109,3 @@ public class Pedido {
         this.articulo = articulo;
     }
 }
-
-

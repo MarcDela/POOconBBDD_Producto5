@@ -25,6 +25,7 @@
         <mapping class="InnerJoinConElCafe.modelo.Cliente"/>
         <mapping class="InnerJoinConElCafe.modelo.ClienteEstandar"/>
         <mapping class="InnerJoinConElCafe.modelo.ClientePremium"/>
+        <mapping class="InnerJoinConElCafe.modelo.Pedido"/>
 
     </session-factory>
 </hibernate-configuration>
