@@ -1,9 +1,9 @@
 package InnerJoinConElCafe.vista;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 // 1. Heredamos de Application para que Java sepa que esto es una ventana
@@ -12,20 +12,27 @@ public class App extends Application {
     // 2. El método start es el "nuevo main". Stage es la ventana principal (el marco).
     @Override
     public void start(Stage stage) {
-        // Creamos un componente visual (un texto) para comprobar que la nueva intefaz funciona.
-        Label label = new Label("¡Hola! JavaFX 21 funcionando.");
 
-        // Creamos un contenedor (StackPane) para organizar los elementos
-        StackPane root = new StackPane(label);
-
-        // Creamos la "Escena" (el contenido dentro de la ventana) con tamaño 400x300
-        Scene scene = new Scene(root, 400, 300);
-
-        // Configuramos el marco (Stage)
-        stage.setTitle("Online Store - Producto 5");
-        stage.setScene(scene);
+        try{
+            // 1. Cargamos el archivo FXML desde la carpeta de recursos
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/VentanaMain.fxml"));
         
-        stage.show();
+            // 2. Creamos el contenedor principal cargando el FXML
+            Parent root = loader.load();
+
+            // 3. Creamos la escena con nuestro diseño
+            Scene scene = new Scene(root);
+
+            // 4. Configuramos el marco (Stage)
+            stage.setTitle("Online Store - Gestor de Negocio");
+            stage.setScene(scene);
+        
+            stage.show();
+
+        } catch (Exception e) {
+            System.err.println("Error al cargar la ventana principal: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
