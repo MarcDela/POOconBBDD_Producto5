@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+.root {
+    -fx-font-family: 'Inter', 'Arial', sans-serif;
+    -fx-background-color: #2b2d30;
+}
+
+.menu-lateral {
+    -fx-background-color: #1e1f22;
+    -fx-padding: 20px;
+}
+
+.titulo-app {
+    -fx-text-fill: #bbbbbb;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 20 0;
+}
+
+.btn-menu {
+    -fx-background-color: transparent;
+    -fx-text-fill: #bbbbbb;
+    -fx-font-size: 13px;
+    -fx-pref-width: 160px;
+    -fx-alignment: CENTER-LEFT;
+    -fx-padding: 8 12 8 12;
+    -fx-cursor: hand;
+    -fx-background-radius: 6;
+}
+
+.btn-menu:hover {
+    -fx-background-color: #3c3f41;
+}
+
+.btn-menu-activo {
+    -fx-background-color: #3c3f41;
+    -fx-text-fill: #f26f54;
+    -fx-border-color: transparent transparent transparent #f26f54;
+    -fx-border-width: 0 0 0 3px;
+}
+
+.titulo-seccion {
+    -fx-text-fill: #bbbbbb;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.input-campo {
+    -fx-background-color: #3c3f41;
+    -fx-text-fill: #bbbbbb;
+    -fx-prompt-text-fill: #666666;
+    -fx-border-color: #555555;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-pref-width: 140px;
+}
+
+.btn-accion {
+    -fx-background-color: #f26f54;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 4;
+    -fx-cursor: hand;
+    -fx-padding: 6 16 6 16;
+}
+
+.btn-accion:hover {
+    -fx-background-color: #e05a40;
+}
+
+.mensaje {
+    -fx-text-fill: #bbbbbb;
+    -fx-font-size: 12px;
+}
+
+.btn-cancelar {
+    -fx-background-color: #f25489;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 4;
+    -fx-cursor: hand;
+    -fx-padding: 6 16 6 16;
+}
+
+.btn-cancelar:hover {
+    -fx-background-color: #d43870;
+}
+
