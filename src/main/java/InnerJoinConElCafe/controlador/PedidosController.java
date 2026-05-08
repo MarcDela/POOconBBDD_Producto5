@@ -5,11 +5,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import java.io.IOException;
 import InnerJoinConElCafe.modelo.Pedido;
+// import javafx.scene.control.RadioButton;
 // import InnerJoinConElCafe.modelo.Lista;
 
 public class PedidosController {
@@ -23,6 +25,9 @@ public class PedidosController {
     @FXML private TextField txtCantidad;
     @FXML private TextField txtNumPedido;
     @FXML private TextArea txtAreaResultados;
+    @FXML private RadioButton rbTodos;
+    @FXML private RadioButton rbEnCurso;
+    @FXML private RadioButton rbProcesados;
 
     // --- MÉTODOS DE ACCIÓN ---
 
@@ -52,38 +57,36 @@ public class PedidosController {
 
     @FXML
     void mostrarPedidos(ActionEvent event) {
-        // 1. Obtenemos el NIF del campo para filtrar los resultados
+        // 1. Determinar el char del estado según el RadioButton seleccionado
+        char estado = '1'; // Por defecto todos
+        if (rbEnCurso.isSelected()) { estado = '2';} 
+        else if (rbProcesados.isSelected()) { estado = '3'; }
+
+        // 2. Obtener el NIF en caso de que se haya introducido
         String nifFiltro = txtNifCliente.getText();
-    
-        // Si el campo está vacío o solo tiene espacios, pasamos null para que no filtre
         if (nifFiltro == null || nifFiltro.trim().isEmpty()) {
             nifFiltro = null;
         }
 
-        // 2. Llamamos al controlador de lógica
-        // Usamos '1' para traer TODOS (En curso y procesados) filtrados por ese NIF
-        var res = controladorLogica.obtenerPedidosFiltrados('1', nifFiltro);
-    
+        // 3. Llamamos a la lógica de negocio
+        var res = controladorLogica.obtenerPedidosFiltrados(estado, nifFiltro);
+
+        // 4. Mostrar resultados
         if (res.esExitoso()) {
             StringBuilder sb = new StringBuilder();
-            sb.append("=== RESULTADOS PARA NIF: ").append(nifFiltro == null ? "TODOS" : nifFiltro).append(" ===\n\n");
-        
+            sb.append("=== FILTRO: ").append(estado == '1' ? "TODOS" : (estado == '2' ? "EN CURSO" : "PROCESADOS")).append(" ===\n");
+            if (nifFiltro != null) sb.append("CLIENTE: ").append(nifFiltro).append("\n");
+            sb.append("------------------------------------------\n");
+
             for (Pedido p : res.getDato().getArrayList()) {
                 sb.append(p.toString()).append("\n");
-                // Añadimos el estado y el total como haciamos en GestionOS
                 sb.append("ESTADO: ").append(p.puedeCancelarse() ? "EN CURSO" : "PROCESADO").append("\n");
                 sb.append("TOTAL: ").append(String.format("%.2f", p.calcularPrecio())).append(" €\n");
                 sb.append("------------------------------------------\n");
             }
-
             txtAreaResultados.setText(sb.toString());
-            txtNifCliente.clear();
-            txtCodigoArticulo.clear();
-            txtCantidad.clear();
-            txtNumPedido.clear();
-            
         } else {
-            txtAreaResultados.setText("MENSAJE: " + res.getMensaje());
+            txtAreaResultados.setText("INFO: " + res.getMensaje());
         }
     }
 
@@ -106,20 +109,9 @@ public class PedidosController {
 
     // --- MENÚ DE NAVEGACIÓN ---
 
-    @FXML
-    void volverMenuPrincipal(ActionEvent event) {
-        cambiarVentana("/VentanaMain.fxml", event);
-    }
-
-    @FXML
-    void abrirMenuClientes(ActionEvent event) {
-        txtAreaResultados.setText("Navegando a Clientes... (Falta FXML)");
-    }
-
-    @FXML
-    void abrirMenuArticulos(ActionEvent event) {
-        txtAreaResultados.setText("Navegando a Artículos... (Falta FXML)");
-    }
+    @FXML void volverMenuPrincipal(ActionEvent event) { cambiarVentana("/VentanaMain.fxml", event); }
+    @FXML void abrirMenuClientes(ActionEvent event) { cambiarVentana("/VentanaClientes.fxml", event); }
+    @FXML void abrirMenuArticulos(ActionEvent event) { cambiarVentana("/VentanaArticulos.fxml", event); }
 
     private void cambiarVentana(String fxml, ActionEvent event) {
         try {
