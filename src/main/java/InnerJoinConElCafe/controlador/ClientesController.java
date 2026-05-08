@@ -2,16 +2,11 @@ package InnerJoinConElCafe.controlador;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
-import java.io.IOException;
 
-public class ClientesController {
+public class ClientesController extends BaseController {
 
     private Controlador controladorLogica = new Controlador();
 
@@ -85,12 +80,4 @@ public class ClientesController {
     @FXML void abrirMenuPedidos(ActionEvent event) { cambiarVentana("/VentanaPedidos.fxml", event); }
     @FXML void abrirMenuArticulos(ActionEvent event) { cambiarVentana("/VentanaArticulos.fxml", event); }
     @FXML void volverMenuPrincipal(ActionEvent event) { cambiarVentana("/VentanaMain.fxml", event); }
-
-    private void cambiarVentana(String fxml, ActionEvent event) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource(fxml));
-            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-        } catch (IOException e) { e.printStackTrace(); }
-    }
 }
