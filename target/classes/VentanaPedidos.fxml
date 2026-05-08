@@ -11,51 +11,40 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="800.0" spacing="15.0" style="-fx-background-color: radial-gradient(center 50% 50%, radius 70%, #41295a, #1a0a24);" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="InnerJoinConElCafe.controlador.PedidosController">
+<VBox alignment="TOP_CENTER" prefHeight="650.0" prefWidth="850.0" spacing="15.0" 
+      styleClass="root-container" 
+      stylesheets="@estilos.css" 
+      xmlns="http://javafx.com/javafx/21" 
+      xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="InnerJoinConElCafe.controlador.PedidosController">
    <children>
       
-      <HBox alignment="CENTER_RIGHT" prefHeight="50.0" spacing="10.0" style="-fx-padding: 10;">
+      <HBox alignment="CENTER_RIGHT" prefHeight="50.0" spacing="10.0" styleClass="hbox-nav">
          <children>
-            <Button onAction="#abrirMenuClientes" style="-fx-background-color: #FFD700; -fx-background-radius: 5; -fx-font-size: 11;" text="CLIENTES">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Button>
-            <Button onAction="#abrirMenuArticulos" style="-fx-background-color: #FFD700; -fx-background-radius: 5; -fx-font-size: 11;" text="ARTÍCULOS">
-                <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Button>
-            <Button onAction="#volverMenuPrincipal" style="-fx-background-color: #ff4d4d; -fx-text-fill: white; -fx-background-radius: 5; -fx-font-size: 11; -fx-font-weight: bold;" text="VOLVER">
-                <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Button>
+            <Button onAction="#abrirMenuClientes" styleClass="boton-nav" text="CLIENTES" />
+            <Button onAction="#abrirMenuArticulos" styleClass="boton-nav" text="ARTÍCULOS" />
+            <Button onAction="#volverMenuPrincipal" styleClass="boton-rojo" text="VOLVER" />
          </children>
       </HBox>
 
-      <Label text="GESTIÓN DE PEDIDOS" textFill="LIGHTCYAN">
-         <font>
-            <Font name="Tahoma Bold" size="30.0" />
-         </font>
-      </Label>
+      <Label text="GESTIÓN DE PEDIDOS" styleClass="titulo-principal" />
 
       <HBox alignment="CENTER" spacing="20.0">
          <children>
             <VBox spacing="5.0">
-               <Label text="NIF Cliente (Nuevo o filtrar por NIF):" textFill="WHITE" />
+               <Label text="NIF Cliente:" styleClass="label-blanca" />
                <TextField fx:id="txtNifCliente" promptText="12345678X" />
             </VBox>
             <VBox spacing="5.0">
-               <Label text="Código Artículo:" textFill="WHITE" />
+               <Label text="Código Artículo:" styleClass="label-blanca" />
                <TextField fx:id="txtCodigoArticulo" promptText="Ej: 101" />
             </VBox>
             <VBox spacing="5.0">
-               <Label text="Cantidad:" textFill="WHITE" />
+               <Label text="Cantidad:" styleClass="label-blanca" />
                <TextField fx:id="txtCantidad" prefWidth="80.0" promptText="Nº" />
             </VBox>
             <VBox spacing="5.0">
-               <Label text="Nº Pedido (Solo para eliminar):" textFill="WHITE" />
+               <Label text="Nº Pedido (Eliminar):" styleClass="label-blanca" />
                <TextField fx:id="txtNumPedido" prefWidth="100.0" />
             </VBox>
          </children>
@@ -63,42 +52,33 @@
 
       <HBox alignment="CENTER" spacing="15.0">
          <children>
-            <Button onAction="#anadirPedido" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #FFD700; -fx-background-radius: 10; -fx-font-weight: bold; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 10, 0, 0, 5);" text="AÑADIR PEDIDO">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font></Button>
-            <Button onAction="#mostrarPedidos" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #FFD700; -fx-background-radius: 10; -fx-font-weight: bold; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 10, 0, 0, 5);" text="MOSTRAR PEDIDOS" />
-            <Button onAction="#eliminarPedido" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #FFD700; -fx-background-radius: 10; -fx-font-weight: bold; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 10, 0, 0, 5);" text="ELIMINAR PEDIDO" />
+            <Button onAction="#anadirPedido" prefHeight="40.0" prefWidth="140.0" styleClass="boton-amarillo" text="AÑADIR PEDIDO" />
+            <Button onAction="#mostrarPedidos" prefHeight="40.0" prefWidth="140.0" styleClass="boton-amarillo" text="MOSTRAR PEDIDOS" />
+            <Button onAction="#eliminarPedido" prefHeight="40.0" prefWidth="140.0" styleClass="boton-amarillo" text="ELIMINAR PEDIDO" />
          </children>
          <padding>
             <Insets top="10.0" />
          </padding>
       </HBox>
-      <Label prefHeight="34.0" prefWidth="265.0" text="Filtrar muestra de pedidos" textFill="GOLD">
-         <font>
-            <Font name="Tahoma Bold" size="20.0" />
-         </font>
-      </Label>
-      <HBox alignment="CENTER" prefHeight="24.0" prefWidth="800.0">
+
+      <Label text="Filtrar muestra de pedidos" styleClass="subtitulo" />
+
+      <HBox alignment="CENTER" prefHeight="24.0" spacing="15.0">
          <children>
-            <RadioButton fx:id="rbTodos" mnemonicParsing="false" prefHeight="17.0" prefWidth="78.0" selected="true" text="Todos" textFill="WHITE">
+            <RadioButton fx:id="rbTodos" selected="true" text="Todos">
                <toggleGroup>
                   <ToggleGroup fx:id="grupoEstado" />
                </toggleGroup>
             </RadioButton>
-            <RadioButton fx:id="rbEnCurso" mnemonicParsing="false" prefHeight="17.0" prefWidth="109.0" text="Solo en curso" textFill="WHITE" toggleGroup="$grupoEstado" />
-            <RadioButton fx:id="rbProcesados" mnemonicParsing="false" prefHeight="17.0" prefWidth="112.0" text="Solo Procesados" textFill="WHITE" toggleGroup="$grupoEstado" />
+            <RadioButton fx:id="rbEnCurso" text="Solo en curso" toggleGroup="$grupoEstado" />
+            <RadioButton fx:id="rbProcesados" text="Solo Procesados" toggleGroup="$grupoEstado" />
          </children>
       </HBox>
 
-      <VBox prefHeight="250.0" spacing="5.0" style="-fx-padding: 20;">
+      <VBox prefHeight="300.0" spacing="5.0" styleClass="vbox-consola">
          <children>
-            <Label text="CONSOLA DE SALIDA / RESULTADOS:" textFill="LIGHTCYAN">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <TextArea fx:id="txtAreaResultados" editable="false" prefHeight="188.0" prefWidth="705.0" style="-fx-control-inner-background: #2b2b2b; -fx-text-fill: #00ff00; -fx-font-family: 'Consolas';" />
+            <Label text="CONSOLA DE SALIDA / RESULTADOS:" styleClass="label-cyan-bold" />
+            <TextArea fx:id="txtAreaResultados" editable="false" prefHeight="250.0" styleClass="consola" />
          </children>
       </VBox>
    </children>

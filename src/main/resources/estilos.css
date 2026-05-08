@@ -1,0 +1,98 @@
+/* 1. CONTENEDORES Y FONDOS */
+.root-container {
+    -fx-background-color: radial-gradient(center 50% 50%, radius 70%, #41295a, #1a0a24);
+}
+
+.hbox-nav {
+    -fx-padding: 10;
+}
+
+.vbox-consola {
+    -fx-padding: 15;
+}
+
+/* 2. TEXTOS Y TÍTULOS */
+.titulo-principal {
+    -fx-text-fill: LIGHTCYAN;
+    -fx-font-family: "Tahoma";
+    -fx-font-weight: bold;
+    -fx-font-size: 30px;
+}
+
+/* Estilo específico para el título del Main (más grande) */
+.titulo-main {
+    -fx-text-fill: LIGHTCYAN;
+    -fx-font-family: "Tahoma";
+    -fx-font-weight: bold;
+    -fx-font-size: 36px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 5, 0, 0, 2);
+}
+
+.subtitulo {
+    -fx-text-fill: GOLD;
+    -fx-font-family: "System";
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+}
+
+.label-blanca {
+    -fx-text-fill: white;
+}
+
+.label-blanca-bold {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.label-cyan-bold {
+    -fx-text-fill: LIGHTCYAN;
+    -fx-font-weight: bold;
+}
+
+/* 3. BOTONES */
+.boton-amarillo {
+    -fx-background-color: #FFD700;
+    -fx-background-radius: 10;
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 10, 0, 0, 5);
+}
+
+/* Botones del Menú Principal (con brillo dorado) */
+.boton-menu-main {
+    -fx-background-color: #FFD700;
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
+    -fx-effect: dropshadow(gaussian, rgba(255, 215, 0, 0.5), 15, 0.5, 0, 0);
+}
+
+.boton-nav {
+    -fx-background-color: #FFD700;
+    -fx-background-radius: 5;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.boton-rojo {
+    -fx-background-color: #ff4d4d;
+    -fx-text-fill: white;
+    -fx-background-radius: 5;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+/* 4. CAMPOS Y CONSOLA */
+.consola {
+    -fx-control-inner-background: #2b2b2b;
+    -fx-text-fill: #00ff00;
+    -fx-font-family: "Consolas";
+    -fx-font-size: 14px;
+}
+
+.radio-button {
+    -fx-text-fill: white;
+}
+
+.separator-invisible {
+    -fx-opacity: 0;
+}
