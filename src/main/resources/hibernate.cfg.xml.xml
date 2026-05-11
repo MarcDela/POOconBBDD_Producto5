@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <!-- CONEXIÓN CON LA BBDD -->
+        <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/online_store</property>
+        <property name="connection.username">root</property>
+        <property name="connection.password">SQLxUOC1421316_!</property>
+
+        <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+
+        <!-- Chivato de control de errores (Muestra todo lo que hace Hibernate en cada operacion de la app) -->
+        <property name="show_sql">true</property>
+        <property name="format_sql">true</property>
+
+        <!-- En caso de que una clase no tenga una tabla en MySQL, esto se encargará de crearla automáticamente -->
+        <property name="hbm2ddl.auto">update</property> 
+
+        <!-- MAPEADO DE LAS CLASES -->
+        <mapping class="InnerJoinConElCafe.modelo.Articulo"/>
+        <mapping class="InnerJoinConElCafe.modelo.Cliente"/>
+        <mapping class="InnerJoinConElCafe.modelo.ClienteEstandar"/>
+        <mapping class="InnerJoinConElCafe.modelo.ClientePremium"/>
+        <mapping class="InnerJoinConElCafe.modelo.Pedido"/>
+
+    </session-factory>
+</hibernate-configuration>
