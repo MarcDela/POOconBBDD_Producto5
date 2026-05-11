@@ -5,6 +5,7 @@ import InnerJoinConElCafe.modelo.Articulo;
 import InnerJoinConElCafe.modelo.Lista;
 import InnerJoinConElCafe.modelo.Resultado;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
@@ -17,21 +18,23 @@ public class VistaArticulos extends VBox {
         this.controlador = controlador;
         setSpacing(20);
         setPadding(new Insets(30));
-        getStyleClass().add("contenido");
 
         Label titulo = new Label("Gestión de Artículos");
         titulo.getStyleClass().add("titulo-seccion");
 
-        HBox formulario = crearFormulario();
+        TitledPane tpAnadir = new TitledPane("Añadir Artículo", crearFormulario());
+        tpAnadir.setCollapsible(false);
+
         tabla = crearTabla();
 
-        getChildren().addAll(titulo, formulario, tabla);
+        getChildren().addAll(titulo, tpAnadir, tabla);
         cargarArticulos();
     }
 
     private HBox crearFormulario() {
         HBox form = new HBox(10);
-        form.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+        form.setAlignment(Pos.CENTER_LEFT);
+        form.setPadding(new Insets(10));
 
         TextField txtDesc = new TextField();
         txtDesc.setPromptText("Descripción");
@@ -41,6 +44,17 @@ public class VistaArticulos extends VBox {
         txtPrecio.setPromptText("Precio");
         txtPrecio.getStyleClass().add("input-campo");
 
+        txtPrecio.focusedProperty().addListener((obs, teniafoco, tieneFoco) -> {
+            if (!tieneFoco) {
+                try {
+                    Double.parseDouble(txtPrecio.getText());
+                    txtPrecio.setStyle("-fx-border-color: transparent;");
+                } catch (NumberFormatException e) {
+                    txtPrecio.setStyle("-fx-border-color: #f25489;");
+                }
+            }
+        });
+
         TextField txtEnvio = new TextField();
         txtEnvio.setPromptText("Gastos envío");
         txtEnvio.getStyleClass().add("input-campo");
@@ -49,8 +63,14 @@ public class VistaArticulos extends VBox {
         txtTiempo.setPromptText("Tiempo prep. (min)");
         txtTiempo.getStyleClass().add("input-campo");
 
-        Button btnAnadir = new Button("Añadir");
+        Button btnAnadir = new Button("Añadir Artículo");
         btnAnadir.getStyleClass().add("btn-accion");
+
+        txtTiempo.setOnKeyPressed(e -> {
+            if (e.getCode() == javafx.scene.input.KeyCode.ENTER) {
+                btnAnadir.fire();
+            }
+        });
 
         Label lblMensaje = new Label();
         lblMensaje.getStyleClass().add("mensaje");
@@ -76,13 +96,32 @@ public class VistaArticulos extends VBox {
             }
         });
 
-        form.getChildren().addAll(txtDesc, txtPrecio, txtEnvio, txtTiempo, btnAnadir, lblMensaje);
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        TextField txtBuscar = new TextField();
+        txtBuscar.setPromptText("🔍 Buscar artículo...");
+        txtBuscar.getStyleClass().add("input-campo");
+        txtBuscar.setPrefWidth(200);
+
+        txtBuscar.textProperty().addListener((observable, anterior, nuevo) -> {
+            tabla.getItems().clear();
+            Resultado<Lista<Articulo>> res = controlador.obtenerArticulos();
+            if (res.esExitoso()) {
+                for (Articulo a : res.getDato().getArrayList()) {
+                    if (a.getDescripcion().toLowerCase().contains(nuevo.toLowerCase())) {
+                        tabla.getItems().add(a);
+                    }
+                }
+            }
+        });
+
+        form.getChildren().addAll(txtDesc, txtPrecio, txtEnvio, txtTiempo, btnAnadir, lblMensaje, spacer, txtBuscar);
         return form;
     }
 
     private TableView<Articulo> crearTabla() {
         TableView<Articulo> tabla = new TableView<>();
-        tabla.getStyleClass().add("tabla");
 
         TableColumn<Articulo, Integer> colCodigo = new TableColumn<>("Código");
         colCodigo.setCellValueFactory(d -> new javafx.beans.property.SimpleIntegerProperty(d.getValue().getCodigo()).asObject());
@@ -100,6 +139,7 @@ public class VistaArticulos extends VBox {
         colTiempo.setCellValueFactory(d -> new javafx.beans.property.SimpleIntegerProperty(d.getValue().getTiempoPreparacion()).asObject());
 
         tabla.getColumns().addAll(colCodigo, colDesc, colPrecio, colEnvio, colTiempo);
+        tabla.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
         return tabla;
     }
 

@@ -13,7 +13,6 @@ public class VistaClientes extends VBox {
 
     private Controlador controlador;
     private TableView<Cliente> tabla;
-    private ComboBox<String> filtroTipo;
 
     public VistaClientes(Controlador controlador) {
         this.controlador = controlador;
@@ -23,17 +22,22 @@ public class VistaClientes extends VBox {
         Label titulo = new Label("Gestión de Clientes");
         titulo.getStyleClass().add("titulo-seccion");
 
-        HBox formulario = crearFormulario();
-        HBox filtros = crearFiltros();
+        TitledPane tpAnadir = new TitledPane("Añadir Cliente", crearFormulario());
+        tpAnadir.setCollapsible(false);
+
+        TitledPane tpFiltros = new TitledPane("Filtrar Clientes", crearFiltros());
+        tpFiltros.setCollapsible(false);
+
         tabla = crearTabla();
 
-        getChildren().addAll(titulo, formulario, filtros, tabla);
+        getChildren().addAll(titulo, tpAnadir, crearFiltros(), tabla);
         cargarClientes(1);
     }
 
     private HBox crearFormulario() {
         HBox form = new HBox(10);
         form.setAlignment(Pos.CENTER_LEFT);
+        form.setPadding(new Insets(10));
 
         TextField txtNombre = new TextField();
         txtNombre.setPromptText("Nombre");
@@ -54,9 +58,8 @@ public class VistaClientes extends VBox {
         ComboBox<String> cmbTipo = new ComboBox<>();
         cmbTipo.getItems().addAll("Estándar", "Premium");
         cmbTipo.setValue("Estándar");
-        cmbTipo.getStyleClass().add("input-campo");
 
-        Button btnAnadir = new Button("Añadir");
+        Button btnAnadir = new Button("Añadir Cliente");
         btnAnadir.getStyleClass().add("btn-accion");
 
         Label lblMensaje = new Label();
@@ -85,11 +88,12 @@ public class VistaClientes extends VBox {
     private HBox crearFiltros() {
         HBox filtros = new HBox(10);
         filtros.setAlignment(Pos.CENTER_LEFT);
+        filtros.setPadding(new Insets(10));
 
         Label lblFiltro = new Label("Mostrar:");
         lblFiltro.getStyleClass().add("mensaje");
 
-        filtroTipo = new ComboBox<>();
+        ComboBox<String> filtroTipo = new ComboBox<>();
         filtroTipo.getItems().addAll("Todos", "Estándar", "Premium");
         filtroTipo.setValue("Todos");
 
@@ -127,6 +131,7 @@ public class VistaClientes extends VBox {
         ));
 
         tabla.getColumns().addAll(colNif, colNombre, colDomicilio, colEmail, colTipo);
+        tabla.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
         return tabla;
     }
 

@@ -25,7 +25,7 @@ public class App extends Application {
         menuLateral.getStyleClass().add("menu-lateral");
         menuLateral.setPrefWidth(200);
 
-        Label titulo = new Label("OnlineStore");
+        Label titulo = new Label("ONLINE STORE");
         titulo.getStyleClass().add("titulo-app");
 
         Button btnArticulos = crearBotonMenu("Artículos");
@@ -45,7 +45,7 @@ public class App extends Application {
         btnClientes.setOnAction(e -> activarBoton(btnClientes, contenido, "clientes"));
         btnPedidos.setOnAction(e -> activarBoton(btnPedidos, contenido, "pedidos"));
 
-        Scene scene = new Scene(root, 900, 600);
+        Scene scene = new Scene(root, 1400, 800);
         scene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
         stage.setTitle("OnlineStore");
         stage.setScene(scene);

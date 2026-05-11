@@ -22,15 +22,31 @@ public class VistaPedidos extends VBox {
         Label titulo = new Label("Gestión de Pedidos");
         titulo.getStyleClass().add("titulo-seccion");
 
-        HBox formulario = crearFormulario();
+        // Fila con los dos grupos en la misma línea
+        HBox filaGrupos = new HBox(20);
+        filaGrupos.setAlignment(Pos.TOP_LEFT);
+        filaGrupos.getChildren().addAll(crearGrupoAnadir(), crearGrupoCancelar());
+
         HBox filtros = crearFiltros();
         tabla = crearTabla();
 
-        getChildren().addAll(titulo, formulario, filtros, tabla);
+        getChildren().addAll(titulo, filaGrupos, filtros, tabla);
         cargarPedidos('1', null);
     }
 
-    private HBox crearFormulario() {
+    private VBox crearGrupoAnadir() {
+        VBox grupo = new VBox(10);
+        grupo.setStyle(
+                "-fx-border-color: #444444;" +
+                        "-fx-border-radius: 6;" +
+                        "-fx-background-color: #313335;" +
+                        "-fx-background-radius: 6;" +
+                        "-fx-padding: 15;"
+        );
+
+        Label lblTitulo = new Label("Añadir Pedido");
+        lblTitulo.setStyle("-fx-text-fill: #888888; -fx-font-size: 11px;");
+
         HBox form = new HBox(10);
         form.setAlignment(Pos.CENTER_LEFT);
 
@@ -46,7 +62,7 @@ public class VistaPedidos extends VBox {
         txtCantidad.setPromptText("Cantidad");
         txtCantidad.getStyleClass().add("input-campo");
 
-        Button btnAnadir = new Button("Añadir");
+        Button btnAnadir = new Button("Añadir Pedido");
         btnAnadir.getStyleClass().add("btn-accion");
 
         Label lblMensaje = new Label();
@@ -71,8 +87,55 @@ public class VistaPedidos extends VBox {
             }
         });
 
-        form.getChildren().addAll(txtNif, txtCodigo, txtCantidad, btnAnadir, lblMensaje);
-        return form;
+        form.getChildren().addAll(txtNif, txtCodigo, txtCantidad, btnAnadir);
+        grupo.getChildren().addAll(lblTitulo, form, lblMensaje);
+        return grupo;
+    }
+
+    private VBox crearGrupoCancelar() {
+        VBox grupo = new VBox(10);
+        grupo.setStyle(
+                "-fx-border-color: #444444;" +
+                        "-fx-border-radius: 6;" +
+                        "-fx-background-color: #313335;" +
+                        "-fx-background-radius: 6;" +
+                        "-fx-padding: 15;"
+        );
+
+        Label lblTitulo = new Label("Cancelar Pedido");
+        lblTitulo.setStyle("-fx-text-fill: #888888; -fx-font-size: 11px;");
+
+        HBox form = new HBox(10);
+        form.setAlignment(Pos.CENTER_LEFT);
+
+        Label lblNum = new Label("Nº pedido:");
+        lblNum.getStyleClass().add("mensaje");
+
+        TextField txtNumPedido = new TextField();
+        txtNumPedido.setPromptText("Número");
+        txtNumPedido.getStyleClass().add("input-campo");
+        txtNumPedido.setPrefWidth(80);
+
+        Button btnCancelar = new Button("Cancelar pedido");
+        btnCancelar.getStyleClass().add("btn-cancelar");
+
+        Label lblMensaje = new Label();
+        lblMensaje.getStyleClass().add("mensaje");
+
+        btnCancelar.setOnAction(e -> {
+            try {
+                int numPedido = Integer.parseInt(txtNumPedido.getText());
+                Resultado<String> res = controlador.cancelarPedido(numPedido);
+                lblMensaje.setText(res.getMensaje());
+                cargarPedidos('1', null);
+            } catch (NumberFormatException ex) {
+                lblMensaje.setText("Error: introduce un número válido.");
+            }
+        });
+
+        form.getChildren().addAll(lblNum, txtNumPedido, btnCancelar);
+        grupo.getChildren().addAll(lblTitulo, form, lblMensaje);
+        return grupo;
     }
 
     private HBox crearFiltros() {
@@ -97,21 +160,6 @@ public class VistaPedidos extends VBox {
         Button btnFiltrar = new Button("Filtrar");
         btnFiltrar.getStyleClass().add("btn-accion");
 
-        // Cancelar pedido
-        Label lblCancelar = new Label("Nº pedido:");
-        lblCancelar.getStyleClass().add("mensaje");
-
-        TextField txtNumPedido = new TextField();
-        txtNumPedido.setPromptText("Número");
-        txtNumPedido.getStyleClass().add("input-campo");
-        txtNumPedido.setPrefWidth(80);
-
-        Button btnCancelar = new Button("Cancelar pedido");
-        btnCancelar.getStyleClass().add("btn-cancelar");
-
-        Label lblMensajeCancelar = new Label();
-        lblMensajeCancelar.getStyleClass().add("mensaje");
-
         btnFiltrar.setOnAction(e -> {
             char estado = switch (cmbEstado.getValue()) {
                 case "Pendientes" -> '2';
@@ -122,19 +170,7 @@ public class VistaPedidos extends VBox {
             cargarPedidos(estado, nif);
         });
 
-        btnCancelar.setOnAction(e -> {
-            try {
-                int numPedido = Integer.parseInt(txtNumPedido.getText());
-                Resultado<String> res = controlador.cancelarPedido(numPedido);
-                lblMensajeCancelar.setText(res.getMensaje());
-                cargarPedidos('1', null);
-            } catch (NumberFormatException ex) {
-                lblMensajeCancelar.setText("Error: introduce un número válido.");
-            }
-        });
-
-        filtros.getChildren().addAll(lblEstado, cmbEstado, lblCliente, txtNifFiltro, btnFiltrar,
-                lblCancelar, txtNumPedido, btnCancelar, lblMensajeCancelar);
+        filtros.getChildren().addAll(lblEstado, cmbEstado, lblCliente, txtNifFiltro, btnFiltrar);
         return filtros;
     }
 
@@ -146,6 +182,9 @@ public class VistaPedidos extends VBox {
 
         TableColumn<Pedido, String> colCliente = new TableColumn<>("Cliente");
         colCliente.setCellValueFactory(d -> new javafx.beans.property.SimpleStringProperty(d.getValue().getCliente().getNombre()));
+
+        TableColumn<Pedido, String> colNif = new TableColumn<>("NIF");
+        colNif.setCellValueFactory(d -> new javafx.beans.property.SimpleStringProperty(d.getValue().getCliente().getNif()));
 
         TableColumn<Pedido, String> colArticulo = new TableColumn<>("Artículo");
         colArticulo.setCellValueFactory(d -> new javafx.beans.property.SimpleStringProperty(d.getValue().getArticulo().getDescripcion()));
@@ -164,7 +203,8 @@ public class VistaPedidos extends VBox {
         TableColumn<Pedido, Double> colTotal = new TableColumn<>("Total");
         colTotal.setCellValueFactory(d -> new javafx.beans.property.SimpleDoubleProperty(d.getValue().calcularPrecio()).asObject());
 
-        tabla.getColumns().addAll(colNum, colCliente, colArticulo, colCantidad, colFecha, colEstado, colTotal);
+        tabla.getColumns().addAll(colNum, colCliente, colNif, colArticulo, colCantidad, colFecha, colEstado, colTotal);
+        tabla.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
         return tabla;
     }
 
