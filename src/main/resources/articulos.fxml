@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="20.0" alignment="TOP_CENTER" 
+      styleClass="root-container" 
+      stylesheets="@designs.css" 
+      xmlns="http://javafx.com/javafx/21" 
+      xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="InnerJoinConElCafe.controlador.articulosControlador">
+    
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <children>
+        <Label text="GESTIÓN DE ARTÍCULOS" styleClass="titulo-main" />
+        
+        <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+            <tabs>
+                <Tab text="Listado de Artículos">
+                    <content>
+                        <VBox spacing="10">
+                            <padding>
+                                <Insets top="10" right="10" bottom="10" left="10"/>
+                            </padding>
+                            <Button text="Actualizar Tabla" onAction="#mostrarArticulos" />
+                            <TableView fx:id="tablaArticulos" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn text="Código"><cellValueFactory><PropertyValueFactory property="codigo"/></cellValueFactory></TableColumn>
+                                    <TableColumn text="Descripción"><cellValueFactory><PropertyValueFactory property="descripcion"/></cellValueFactory></TableColumn>
+                                    <TableColumn text="Precio (PVP)"><cellValueFactory><PropertyValueFactory property="precioVenta"/></cellValueFactory></TableColumn>
+                                    <TableColumn text="Gastos de envío"><cellValueFactory><PropertyValueFactory property="gastosEnvio"/></cellValueFactory></TableColumn>
+                                    <TableColumn text="Tiempo de preparación"><cellValueFactory><PropertyValueFactory property="tiempoPreparacion"/></cellValueFactory></TableColumn>
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </content>
+                </Tab>
+                
+                <Tab text="Añadir Articulo">
+                    <content>
+                        <VBox spacing="15" alignment="CENTER_LEFT">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+    
+    <Label text="Formulario de nuevo artículo" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+    <GridPane hgap="10" vgap="12">
+        <columnConstraints>
+            <ColumnConstraints minWidth="120" halignment="RIGHT" />
+            <ColumnConstraints hgrow="ALWAYS" minWidth="200" />
+        </columnConstraints>
+
+        <children>
+            <Label text="Código:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <TextField fx:id="txtCodigo" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+            <Label text="Descripción:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <TextField fx:id="txtDescripcion" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+            <Label text="Precio de Venta:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <TextField fx:id="txtPrecio" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+            <Label text="Gastos de Envío:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+            <TextField fx:id="txtGastos" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+            <Label text="Tiempo Prep. (min):" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+            <TextField fx:id="txtTiempo" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+        </children>
+    </GridPane>
+
+    <Button text="Guardar Artículo" onAction="#addArticulo" />
+</VBox>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+        
+        <Button text="Volver al Inicio" onAction="#volverInicio" />
+    </children>
+</VBox>

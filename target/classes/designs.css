@@ -1,0 +1,39 @@
+/*Estilo fondo menú principal*/
+.root-container {
+    -fx-background-color: #cde3f4;
+    -fx-padding: 40px;
+    -fx-font-family: "Tahoma";
+}
+
+/*Titulo página de inicio*/
+.titulo-main {
+    -fx-font-family: "Tahoma";
+    -fx-font-weight: bold;
+    -fx-font-size: 30px;
+    -fx-text-fill: #032f5b;
+}
+
+/*Estilo botones menús Gestión Articulos, Pedidos y Clientes*/
+.boton-menu-main {
+    -fx-background-color: #0064a7; 
+    -fx-text-fill: white;          
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+    -fx-background-radius: 10px; /*Contorno redondeado*/       
+}
+
+/*Efecto botones ratón encima*/
+.boton-menu-main:hover {
+    -fx-background-color: #115380; 
+    /*Expansión botón*/
+    -fx-scale-x: 1.05; 
+    -fx-scale-y: 1.05;
+}
+
+.boton-cancelar {
+    -fx-background-color: #d9534f;
+    -fx-text-fill: white;
+    -fx-background-radius: 4px; 
+    -fx-padding: 4px 10px;      
+    -fx-font-size: 11px;       
+}

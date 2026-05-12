@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="20.0" alignment="TOP_CENTER" 
+      styleClass="root-container" 
+      stylesheets="@designs.css" 
+      xmlns="http://javafx.com/javafx/21" 
+      xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="InnerJoinConElCafe.controlador.pedidosControlador"> 
+    
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <children>
+        <Label text="GESTIÓN DE PEDIDOS" styleClass="titulo-main" />
+        
+        <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+            <tabs>
+                <Tab text="Listado de Pedidos">
+                    <content>
+                        <VBox spacing="10">
+                            <padding>
+                                <Insets top="10" right="10" bottom="10" left="10"/>
+                            </padding>
+                            
+                            <HBox spacing="10">
+                                <Button text="Actualizar Tabla" onAction="#mostrarPedidos" />
+                                <Button text="Cancelar Pedido" 
+                                    onAction="#cancelarPedido" 
+                                    styleClass="boton-cancelar" />
+                            </HBox>
+
+                            <TableView fx:id="tablaPedidos" VBox.vgrow="ALWAYS"> 
+                                <columns>
+                                    <TableColumn text="Nº Pedido"><cellValueFactory><PropertyValueFactory property="numeroPedido"/></cellValueFactory></TableColumn>
+                                    <TableColumn text="NIF Cliente"><cellValueFactory><PropertyValueFactory property="nifCliente"/></cellValueFactory></TableColumn>
+                                    <TableColumn text="Código Art."><cellValueFactory><PropertyValueFactory property="codigoArticulo"/></cellValueFactory></TableColumn>
+                                    <TableColumn text="Cantidad"><cellValueFactory><PropertyValueFactory property="cantidad"/></cellValueFactory></TableColumn>
+                                    <TableColumn text="Fecha"><cellValueFactory><PropertyValueFactory property="fechaHora"/></cellValueFactory></TableColumn>
+                                    <TableColumn text="Enviado"><cellValueFactory><PropertyValueFactory property="esEnviado"/></cellValueFactory></TableColumn>
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </content>
+                </Tab>
+                
+                <Tab text="Nuevo Pedido">
+                    <content>
+                        <VBox spacing="15" alignment="TOP_CENTER">
+                            <padding>
+                                <Insets top="20" right="20" bottom="20" left="20"/>
+                            </padding>
+                            
+                            <Label text="Formulario de nuevo pedido" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+                            <GridPane hgap="10" vgap="12" alignment="CENTER">
+                                <columnConstraints>
+                                    <ColumnConstraints minWidth="120" halignment="RIGHT" />
+                                    <ColumnConstraints hgrow="ALWAYS" maxWidth="300" minWidth="200" />
+                                </columnConstraints>
+                                <children>
+                                    <Label text="NIF Cliente:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                    <TextField fx:id="txtNIFCliente" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                                    <Label text="Código Artículo:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                    <TextField fx:id="txtCodigoArticulo" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                                    <Label text="Cantidad:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                    <TextField fx:id="txtCantidad" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                </children>
+                            </GridPane>
+
+                            <Button text="Realizar Pedido" onAction="#addPedido" styleClass="boton-menu-main"/>
+                        </VBox>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+        
+        <Button text="Volver al Inicio" onAction="#volverInicio" />
+    </children>
+</VBox>
